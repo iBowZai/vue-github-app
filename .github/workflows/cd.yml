@@ -27,5 +27,14 @@ jobs:
               with:
                 name: dist-prod
                 path: dist
-
-            
+    
+    deploy-to-prod:
+        needs: build-prod-job
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download Dist Folder artifacts
+              uses: actions/download-artifact@v3
+              with:
+                name: dist-prod
+                
+            - run: ls
