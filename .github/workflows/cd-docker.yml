@@ -1,4 +1,4 @@
-name: 'Buid and Deploy Docker Production'
+name: 'Buid Deploy Docker'
 
 on:
   push:
@@ -18,6 +18,7 @@ jobs:
             registry: ghcr.io
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
+
   auto-deploy-docker-job:
     needs: release-docker-image-job
     runs-on: ubuntu-latest
@@ -25,7 +26,7 @@ jobs:
       CONTAINER_NAME: 'bow-vue-app'
       DOCKER_IMAGE_URL: 'ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}:${{  github.ref_name }}'
     steps:
-    - name: executing remote ssh commands using password
+    - name: executing remote ssh commands using pwd
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: '159.223.41.181'
@@ -38,4 +39,4 @@ jobs:
           docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}  ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}
           docker rm -f ${{ env.CONTAINER_NAME }}
           docker pull ${{ env.DOCKER_IMAGE_URL }}
-          docker run --restart=always -d --name ${{ env.CONTAINER_NAME }} -p 5050:80 ${{ env.DOCKER_IMAGE_URL }}
+          docker run --restart=always -d --name ${{ env.CONTAINER_NAME }} -p 5950:80 ${{ env.DOCKER_IMAGE_URL }}
